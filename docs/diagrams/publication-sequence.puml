@@ -1,0 +1,63 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor white
+skinparam defaultFontName "Times New Roman"
+skinparam defaultFontSize 17
+skinparam shadowing false
+skinparam roundcorner 0
+skinparam ArrowColor #202020
+skinparam LineColor #202020
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #F5F7FA
+skinparam classBorderColor #202020
+skinparam componentBackgroundColor #F5F7FA
+skinparam componentBorderColor #202020
+skinparam stateBackgroundColor white
+skinparam stateBorderColor #202020
+skinparam actorStyle stickman
+skinparam sequenceMessageAlign center
+skinparam sequenceParticipantBackgroundColor #F5F7FA
+skinparam sequenceParticipantBorderColor #202020
+skinparam sequenceLifeLineBorderColor #505050
+skinparam NoteBackgroundColor #FFFFFF
+skinparam NoteBorderColor #707070
+skinparam nodesep 35
+skinparam ranksep 45
+hide circle
+
+autonumber
+actor Coordinator as C
+participant "Node / Java\nHTTP routing" as API
+participant PlannerService as PS
+participant PlanValidator as V
+database "H2 SQL\nvia Database" as DB
+C -> API : Confirm publish(plan)
+API -> PS : publish(plan, false)
+PS -> DB : BEGIN; lock coordinator_guard
+PS -> DB : Read plan + session
+DB --> PS : Status + snapshot + pointer
+alt Already current
+  PS -> DB : COMMIT; no new version
+  PS --> API : Success (idempotent)
+else DRAFT
+  PS -> DB : Recheck input / reservations
+  DB --> PS : Current state
+  PS -> V : validate stored seats
+  V --> PS : Valid or exception
+  alt Fresh, valid, no overlap
+    PS -> DB : Old current -> SUPERSEDED
+    PS -> DB : Publish + switch pointer
+    PS -> DB : COMMIT
+    PS --> API : Publication confirmed
+  else Stale, invalid or conflicting
+    PS -> DB : ROLLBACK all changes
+    PS --> API : Error; preserve current
+  end
+end
+API --> C : Display final result
+note over API
+Node and Java HTTP routing are condensed here.
+Service and SQL responsibilities remain separate.
+end note
+
+@enduml

@@ -1,0 +1,44 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor white
+skinparam defaultFontName "Times New Roman"
+skinparam defaultFontSize 17
+skinparam shadowing false
+skinparam roundcorner 0
+skinparam ArrowColor #202020
+skinparam LineColor #202020
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #F5F7FA
+skinparam classBorderColor #202020
+skinparam componentBackgroundColor #F5F7FA
+skinparam componentBorderColor #202020
+skinparam stateBackgroundColor white
+skinparam stateBorderColor #202020
+skinparam actorStyle stickman
+skinparam sequenceMessageAlign center
+skinparam sequenceParticipantBackgroundColor #F5F7FA
+skinparam sequenceParticipantBorderColor #202020
+skinparam sequenceLifeLineBorderColor #505050
+skinparam NoteBackgroundColor #FFFFFF
+skinparam NoteBorderColor #707070
+skinparam nodesep 35
+skinparam ranksep 45
+hide circle
+
+[*] --> DRAFT : generate
+DRAFT --> PUBLISHED : publish\n[fresh, valid, no overlap]
+DRAFT --> DISCARDED : discard
+PUBLISHED --> SUPERSEDED : publish replacement
+PUBLISHED --> WITHDRAWN : withdraw
+DISCARDED --> [*]
+SUPERSEDED --> [*]
+WITHDRAWN --> [*]
+note bottom of DRAFT
+Stale inputs block publication.
+Staleness is derived, not a stored status.
+end note
+note bottom
+All terminal records remain in history.
+end note
+
+@enduml

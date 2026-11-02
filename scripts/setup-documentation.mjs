@@ -1,0 +1,12 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {createHash} from 'node:crypto';
+import {root} from './paths.mjs';
+const version='1.2026.9',sha256='96ace11f947a04a4320a413a0a2c6bad8b87daaac1869fe51e82622d812fe13c';
+const directory=path.join(root,'tools','documentation');await fs.mkdir(directory,{recursive:true});
+const response=await fetch(`https://repo.maven.apache.org/maven2/net/sourceforge/plantuml/plantuml/${version}/plantuml-${version}.jar`);
+if(!response.ok)throw Error('PlantUML download failed: '+response.status);
+const bytes=Buffer.from(await response.arrayBuffer());
+if(createHash('sha256').update(bytes).digest('hex')!==sha256)throw Error('PlantUML checksum mismatch.');
+await fs.writeFile(path.join(directory,`plantuml-${version}.jar`),bytes);
+console.log('PlantUML '+version+' downloaded and verified.');

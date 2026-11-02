@@ -8,3 +8,5 @@ node_modules/
 .env
 *.log
 output/
+*.private.json
+__pycache__/

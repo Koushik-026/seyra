@@ -1,0 +1,5 @@
+Seyra prepares examination seating plans from a saved roster and actual room layouts. Students sharing a bench must differ in year or branch, while single occupancy remains valid. The system calculates the required number of benches, generates a deterministic draft and independently validates every placement before publication.
+
+HTML, CSS, browser JavaScript and a Node.js server provide a guided coordinator workspace and a student portal. This report concentrates on forms, state handling, API requests, responsive layouts, safe room rendering and the deployed web path.
+
+The completed application uses Java 21, Node.js, HTML, CSS, JavaScript and H2 SQL. Published plan snapshots retain their own student and room facts. A student lookup shows only the matched current assignment and its room position. Automated allocation and SQL checks, focused local browser checks and live HTTPS checks support the reported behavior. The public Render service is a shared fictional demonstration with temporary storage.

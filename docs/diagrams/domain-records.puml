@@ -1,0 +1,76 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor white
+skinparam defaultFontName "Times New Roman"
+skinparam defaultFontSize 17
+skinparam shadowing false
+skinparam roundcorner 0
+skinparam ArrowColor #202020
+skinparam LineColor #202020
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #F5F7FA
+skinparam classBorderColor #202020
+skinparam componentBackgroundColor #F5F7FA
+skinparam componentBorderColor #202020
+skinparam stateBackgroundColor white
+skinparam stateBorderColor #202020
+skinparam actorStyle stickman
+skinparam sequenceMessageAlign center
+skinparam sequenceParticipantBackgroundColor #F5F7FA
+skinparam sequenceParticipantBorderColor #202020
+skinparam sequenceLifeLineBorderColor #505050
+skinparam NoteBackgroundColor #FFFFFF
+skinparam NoteBorderColor #707070
+skinparam nodesep 35
+skinparam ranksep 45
+hide circle
+
+top to bottom direction
+class Input <<record>> {
+  sessionId: long
+  revision: int
+  sessionName: String
+  date, start, end: String
+  students: List<Student>
+  rooms: List<Room>
+}
+class Student <<record>> {
+  id: long
+  roll, name: String
+  year: int
+  branch, section: String
+  revision: int
+  + group(): String
+}
+class Room <<record>> {
+  id: long
+  code: String
+  rows, benchesPerRow: int
+  revision: int
+  excluded: List<String>
+  rowBenchCounts: List<Integer>
+  + benchesInRow(row): int
+  + usable(row, bench): boolean
+}
+class Seat <<record>> {
+  studentId, roomId: long
+  row, bench: int
+  seat: String
+}
+class Capacity <<record>> {
+  students, largestGroup: int
+  usableBenches, physicalSeats: int
+  requiredBenches, shortage: int
+  pairs, singles: int
+}
+Input "1" --> "0..*" Student : roster values
+Input "1" --> "0..*" Room : selected layouts
+Seat ..> Student : studentId
+Seat ..> Room : roomId
+Capacity ..> Input : calculated from
+note bottom of Room
+rowBenchCounts defines actual positions.
+benchesPerRow is the maximum row length.
+end note
+
+@enduml

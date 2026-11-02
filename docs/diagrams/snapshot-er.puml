@@ -1,0 +1,86 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor white
+skinparam defaultFontName "Times New Roman"
+skinparam defaultFontSize 17
+skinparam shadowing false
+skinparam roundcorner 0
+skinparam ArrowColor #202020
+skinparam LineColor #202020
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #F5F7FA
+skinparam classBorderColor #202020
+skinparam componentBackgroundColor #F5F7FA
+skinparam componentBorderColor #202020
+skinparam stateBackgroundColor white
+skinparam stateBorderColor #202020
+skinparam actorStyle stickman
+skinparam sequenceMessageAlign center
+skinparam sequenceParticipantBackgroundColor #F5F7FA
+skinparam sequenceParticipantBorderColor #202020
+skinparam sequenceLifeLineBorderColor #505050
+skinparam NoteBackgroundColor #FFFFFF
+skinparam NoteBorderColor #707070
+skinparam nodesep 35
+skinparam ranksep 45
+hide circle
+
+top to bottom direction
+entity "exam_sessions" as sessions {
+  * id <<PK>>
+  --
+  current_plan_id <<nullable FK>>
+}
+entity plans {
+  * id <<PK>>
+  --
+  session_id <<FK>>
+  version_no, status, fingerprint
+  snapshot, created_at, published_at
+  UQ(session_id, version_no)
+  UQ(session_id, id)
+}
+entity "plan_students" as ps {
+  * plan_id <<PK, FK>>
+  * student_id <<PK>>
+  --
+  roll, name, study_year, branch, section
+  UQ(plan_id, roll)
+}
+entity "plan_rooms" as pr {
+  * plan_id <<PK, FK>>
+  * room_id <<PK>>
+  --
+  code, row_count, benches_per_row
+}
+entity "plan_benches" as pb {
+  * plan_id <<PK, FK>>
+  * room_id <<PK, FK>>
+  * row_no <<PK>>
+  * bench_no <<PK>>
+  --
+  usable : BOOLEAN
+}
+entity "assignments" as a {
+  * plan_id <<PK, FK>>
+  * student_id <<PK, FK>>
+  --
+  room_id, row_no, bench_no <<FK>>
+  seat_label : A or B
+  UQ(plan_id, room_id, row_no,
+     bench_no, seat_label)
+}
+sessions ||--o{ plans : owns
+plans ||--o{ ps
+plans ||--o{ pr
+pr ||--o{ pb : composite FK
+ps ||--o| a : at most one assignment
+pb ||--o{ a : 0..2 occupants (A/B)
+note bottom of plans
+The current pointer uses (session id, plan id)
+to prevent a cross-session publication reference.
+Historical student/room IDs have no master-data FK.
+Guard and audit tables are operational and omitted here.
+end note
+
+@enduml

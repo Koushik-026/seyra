@@ -1,0 +1,51 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor white
+skinparam defaultFontName "Times New Roman"
+skinparam defaultFontSize 17
+skinparam shadowing false
+skinparam roundcorner 0
+skinparam ArrowColor #202020
+skinparam LineColor #202020
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #F5F7FA
+skinparam classBorderColor #202020
+skinparam componentBackgroundColor #F5F7FA
+skinparam componentBorderColor #202020
+skinparam stateBackgroundColor white
+skinparam stateBorderColor #202020
+skinparam actorStyle stickman
+skinparam sequenceMessageAlign center
+skinparam sequenceParticipantBackgroundColor #F5F7FA
+skinparam sequenceParticipantBorderColor #202020
+skinparam sequenceLifeLineBorderColor #505050
+skinparam NoteBackgroundColor #FFFFFF
+skinparam NoteBorderColor #707070
+skinparam nodesep 35
+skinparam ranksep 45
+hide circle
+
+node "Coordinator browser" as CO
+node "Student browser" as ST
+cloud "Render Singapore" {
+  node "Docker web service\nseyra-exam-planner\nFree compute plan" as CON {
+    node "Node.js 24" as N {
+      artifact "HTML / CSS / JS\nHTTP server and proxy" as W
+    }
+    node "Java 21 JRE" as J {
+      artifact "Compiled planner classes\nH2 and Jackson JARs" as C
+    }
+    artifact "H2 practice database files\nEphemeral container storage" as DATA
+  }
+}
+CO --> N : HTTPS
+ST --> N : HTTPS
+N --> J : HTTP on 127.0.0.1:8081
+J --> DATA : JDBC file access
+note bottom of CON
+The public site exposes shared fictional practice data.
+The normal laptop workspace is not uploaded.
+A restart restores a published sample.
+end note
+
+@enduml

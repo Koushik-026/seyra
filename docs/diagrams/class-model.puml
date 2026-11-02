@@ -1,0 +1,63 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor white
+skinparam defaultFontName "Times New Roman"
+skinparam defaultFontSize 17
+skinparam shadowing false
+skinparam roundcorner 0
+skinparam ArrowColor #202020
+skinparam LineColor #202020
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #F5F7FA
+skinparam classBorderColor #202020
+skinparam componentBackgroundColor #F5F7FA
+skinparam componentBorderColor #202020
+skinparam stateBackgroundColor white
+skinparam stateBorderColor #202020
+skinparam actorStyle stickman
+skinparam sequenceMessageAlign center
+skinparam sequenceParticipantBackgroundColor #F5F7FA
+skinparam sequenceParticipantBorderColor #202020
+skinparam sequenceLifeLineBorderColor #505050
+skinparam NoteBackgroundColor #FFFFFF
+skinparam NoteBorderColor #707070
+skinparam nodesep 35
+skinparam ranksep 45
+hide circle
+
+top to bottom direction
+class Server {
+  - service: PlannerService
+  - demoService: PlannerService
+  + main(args): void
+  - handle(exchange): void
+}
+class PlannerService {
+  - db: Database
+  - allocator: Allocator
+  - validator: PlanValidator
+  + generate(session): long
+  + publish(plan, testFailure): void
+  + lookup(session, roll): Map
+  + withdraw(session): void
+}
+class Database {
+  + open(): Connection
+  + reader(): Connection
+  + read(work): T
+  + transaction(work): T
+}
+class Allocator {
+  + capacity(input): Capacity
+  + allocate(input): List<Seat>
+}
+class PlanValidator {
+  + validate(input, seats, session): List
+  + requireValid(input, seats, session): void
+}
+Server -down-> PlannerService : delegates
+PlannerService -right-> Database : uses JDBC wrapper
+PlannerService *-down- Allocator
+PlannerService *-down- PlanValidator
+
+@enduml

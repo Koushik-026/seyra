@@ -1,0 +1,45 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor white
+skinparam defaultFontName "Times New Roman"
+skinparam defaultFontSize 17
+skinparam shadowing false
+skinparam roundcorner 0
+skinparam ArrowColor #202020
+skinparam LineColor #202020
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #F5F7FA
+skinparam classBorderColor #202020
+skinparam componentBackgroundColor #F5F7FA
+skinparam componentBorderColor #202020
+skinparam stateBackgroundColor white
+skinparam stateBorderColor #202020
+skinparam actorStyle stickman
+skinparam sequenceMessageAlign center
+skinparam sequenceParticipantBackgroundColor #F5F7FA
+skinparam sequenceParticipantBorderColor #202020
+skinparam sequenceLifeLineBorderColor #505050
+skinparam NoteBackgroundColor #FFFFFF
+skinparam NoteBorderColor #707070
+skinparam nodesep 35
+skinparam ranksep 45
+hide circle
+
+object "coordinator : Browser" as C
+object "proxy : NodeServer" as N
+object "api : Server" as API
+object "service : PlannerService" as PS
+object "validator : PlanValidator" as V
+object "store : Database" as DB
+C --> N : 1: POST publish(plan)
+N --> API : 1.1: forward HTTP request
+API --> PS : 1.1.1: publish(plan, false)
+PS --> DB : 1.1.1.1: lock and read\n1.1.1.3: switch statuses and commit
+PS --> V : 1.1.1.2: validate stored placements
+N --> C : 2: publication result
+note bottom of PS
+Numbered messages show ordering across object links.
+Failure before commit rolls back the entire publication.
+end note
+
+@enduml

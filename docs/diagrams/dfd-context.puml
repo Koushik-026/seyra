@@ -1,0 +1,41 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor white
+skinparam defaultFontName "Times New Roman"
+skinparam defaultFontSize 17
+skinparam shadowing false
+skinparam roundcorner 0
+skinparam ArrowColor #202020
+skinparam LineColor #202020
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #F5F7FA
+skinparam classBorderColor #202020
+skinparam componentBackgroundColor #F5F7FA
+skinparam componentBorderColor #202020
+skinparam stateBackgroundColor white
+skinparam stateBorderColor #202020
+skinparam actorStyle stickman
+skinparam sequenceMessageAlign center
+skinparam sequenceParticipantBackgroundColor #F5F7FA
+skinparam sequenceParticipantBorderColor #202020
+skinparam sequenceLifeLineBorderColor #505050
+skinparam NoteBackgroundColor #FFFFFF
+skinparam NoteBorderColor #707070
+skinparam nodesep 35
+skinparam ranksep 45
+hide circle
+
+top to bottom direction
+rectangle Coordinator as C
+usecase "0\nSeyra seating planner" as P
+rectangle Student as S
+C --> P : Roster, room layouts, sitting details,\nreview and publication commands
+P --> C : Validation messages, drafts,\nversion history and exports
+S --> P : Sitting and roll number
+P --> S : Current assignment and room map\nor useful no-result message
+note bottom of P
+Context data-flow diagram, not a UML diagram.
+Database details are inside the system boundary.
+end note
+
+@enduml

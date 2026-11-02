@@ -1,0 +1,55 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor white
+skinparam defaultFontName "Times New Roman"
+skinparam defaultFontSize 17
+skinparam shadowing false
+skinparam roundcorner 0
+skinparam ArrowColor #202020
+skinparam LineColor #202020
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #F5F7FA
+skinparam classBorderColor #202020
+skinparam componentBackgroundColor #F5F7FA
+skinparam componentBorderColor #202020
+skinparam stateBackgroundColor white
+skinparam stateBorderColor #202020
+skinparam actorStyle stickman
+skinparam sequenceMessageAlign center
+skinparam sequenceParticipantBackgroundColor #F5F7FA
+skinparam sequenceParticipantBorderColor #202020
+skinparam sequenceLifeLineBorderColor #505050
+skinparam NoteBackgroundColor #FFFFFF
+skinparam NoteBorderColor #707070
+skinparam nodesep 35
+skinparam ranksep 45
+hide circle
+
+left to right direction
+actor Coordinator as C
+actor Student as S
+rectangle "Seyra" {
+ usecase "Prepare sitting inputs" as INPUT
+ usecase "Generate private draft" as GEN
+ usecase "Check bench capacity" as CAP
+ usecase "Validate placements" as VALID
+ usecase "Review room-wise plan" as REVIEW
+ usecase "Publish reviewed draft" as PUB
+ usecase "Check freshness\nand room conflicts" as FRESH
+ usecase "Print or export a version" as OUT
+ usecase "Withdraw publication" as WITHDRAW
+ usecase "Look up current seat" as LOOK
+}
+C --> INPUT
+C --> GEN
+C --> REVIEW
+C --> PUB
+C --> OUT
+C --> WITHDRAW
+S --> LOOK
+GEN .> CAP : <<include>>
+GEN .> VALID : <<include>>
+PUB .> VALID : <<include>>
+PUB .> FRESH : <<include>>
+
+@enduml

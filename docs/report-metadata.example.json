@@ -1,0 +1,17 @@
+{
+  "project_title": "Seyra Exam Hall Seating Planner",
+  "institution": "Institution name",
+  "institution_status": "Institution status",
+  "affiliation": "Affiliation wording",
+  "address": "Institution address",
+  "department": "Department name",
+  "programme": "Programme name",
+  "degree": "BACHELOR OF TECHNOLOGY",
+  "academic_year": "Academic year",
+  "year_semester": "Year and semester",
+  "section": "Branch and section",
+  "hod": "Head of department",
+  "principal": "Principal",
+  "guides": {"java": "Java guide", "web": "Web guide", "dbms": "DBMS guide", "se": "SE guide"},
+  "team": [{"name": "Student full name", "roll": "Roll number"}]
+}

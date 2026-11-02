@@ -1,0 +1,51 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor white
+skinparam defaultFontName "Times New Roman"
+skinparam defaultFontSize 17
+skinparam shadowing false
+skinparam roundcorner 0
+skinparam ArrowColor #202020
+skinparam LineColor #202020
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #F5F7FA
+skinparam classBorderColor #202020
+skinparam componentBackgroundColor #F5F7FA
+skinparam componentBorderColor #202020
+skinparam stateBackgroundColor white
+skinparam stateBorderColor #202020
+skinparam actorStyle stickman
+skinparam sequenceMessageAlign center
+skinparam sequenceParticipantBackgroundColor #F5F7FA
+skinparam sequenceParticipantBorderColor #202020
+skinparam sequenceLifeLineBorderColor #505050
+skinparam NoteBackgroundColor #FFFFFF
+skinparam NoteBorderColor #707070
+skinparam nodesep 35
+skinparam ranksep 45
+hide circle
+
+top to bottom direction
+package "Browser" {
+  [Coordinator workspace] as CO
+  [Student portal and seat map] as ST
+}
+component "Node HTTP server\nweb/server.mjs" as N
+package "Java backend process" {
+  [Server / JSON routing] as API
+  [PlannerService] as PS
+  [Allocator] as A
+  [PlanValidator] as V
+  [Database / JDBC] as JDBC
+}
+database "H2 relational database\nMasters, plan snapshots and views" as DB
+CO --> N : HTTP / JSON
+ST --> N : HTTP / JSON
+N --> API : Loopback HTTP\ninternal token
+API --> PS
+PS --> A
+PS --> V
+PS --> JDBC
+JDBC --> DB : Prepared SQL\ntransactions / restricted reads
+
+@enduml

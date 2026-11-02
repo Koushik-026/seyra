@@ -1,0 +1,52 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor white
+skinparam defaultFontName "Times New Roman"
+skinparam defaultFontSize 17
+skinparam shadowing false
+skinparam roundcorner 0
+skinparam ArrowColor #202020
+skinparam LineColor #202020
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #F5F7FA
+skinparam classBorderColor #202020
+skinparam componentBackgroundColor #F5F7FA
+skinparam componentBorderColor #202020
+skinparam stateBackgroundColor white
+skinparam stateBorderColor #202020
+skinparam actorStyle stickman
+skinparam sequenceMessageAlign center
+skinparam sequenceParticipantBackgroundColor #F5F7FA
+skinparam sequenceParticipantBorderColor #202020
+skinparam sequenceLifeLineBorderColor #505050
+skinparam NoteBackgroundColor #FFFFFF
+skinparam NoteBorderColor #707070
+skinparam nodesep 35
+skinparam ranksep 45
+hide circle
+
+start
+:Create or select exam sitting;
+:Add students and save roster;
+:Select rooms and save exclusions;
+if (Saved inputs complete?) then (yes)
+else (no)
+ :Explain the next required step;
+ stop
+endif
+if (Enough usable benches?) then (yes)
+else (no)
+ :Show shortage; preserve current plan;
+ stop
+endif
+:Allocate and independently validate;
+if (Candidate valid?) then (yes)
+ :Save complete private DRAFT;
+ :Review the room-wise layout;
+else (no)
+ :Reject; keep previous publication;
+ stop
+endif
+stop
+
+@enduml

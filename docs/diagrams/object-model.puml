@@ -1,0 +1,71 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor white
+skinparam defaultFontName "Times New Roman"
+skinparam defaultFontSize 17
+skinparam shadowing false
+skinparam roundcorner 0
+skinparam ArrowColor #202020
+skinparam LineColor #202020
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #F5F7FA
+skinparam classBorderColor #202020
+skinparam componentBackgroundColor #F5F7FA
+skinparam componentBorderColor #202020
+skinparam stateBackgroundColor white
+skinparam stateBorderColor #202020
+skinparam actorStyle stickman
+skinparam sequenceMessageAlign center
+skinparam sequenceParticipantBackgroundColor #F5F7FA
+skinparam sequenceParticipantBorderColor #202020
+skinparam sequenceLifeLineBorderColor #505050
+skinparam NoteBackgroundColor #FFFFFF
+skinparam NoteBorderColor #707070
+skinparam nodesep 35
+skinparam ranksep 45
+hide circle
+
+object "exam : Input" as I {
+  sessionId = 1
+  sessionName = Synthetic Demo
+}
+object "aiStudent : Student" as S1 {
+  id = 1
+  roll = 0001
+  year = 2
+  branch = AI_ML
+}
+object "cseStudent : Student" as S2 {
+  id = 31
+  roll = 0031
+  year = 2
+  branch = CSE
+}
+object "hall : Room" as R {
+  id = 2
+  code = ROOM-30
+  rowBenchCounts = [6,6,6,6,6]
+}
+object "placeA : Seat" as A {
+  studentId = 1
+  roomId = 2
+  row = 1
+  bench = 1
+  seat = A
+}
+object "placeB : Seat" as B {
+  studentId = 31
+  roomId = 2
+  row = 1
+  bench = 1
+  seat = B
+}
+I -left-> S1 : students
+I -right-> S2 : students
+I -down-> R : rooms
+A ..> S1 : studentId
+B ..> S2 : studentId
+A ..> R : roomId
+B ..> R : roomId
+
+@enduml

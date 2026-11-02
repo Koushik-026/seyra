@@ -1,0 +1,50 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor white
+skinparam defaultFontName "Times New Roman"
+skinparam defaultFontSize 17
+skinparam shadowing false
+skinparam roundcorner 0
+skinparam ArrowColor #202020
+skinparam LineColor #202020
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #F5F7FA
+skinparam classBorderColor #202020
+skinparam componentBackgroundColor #F5F7FA
+skinparam componentBorderColor #202020
+skinparam stateBackgroundColor white
+skinparam stateBorderColor #202020
+skinparam actorStyle stickman
+skinparam sequenceMessageAlign center
+skinparam sequenceParticipantBackgroundColor #F5F7FA
+skinparam sequenceParticipantBorderColor #202020
+skinparam sequenceLifeLineBorderColor #505050
+skinparam NoteBackgroundColor #FFFFFF
+skinparam NoteBorderColor #707070
+skinparam nodesep 35
+skinparam ranksep 45
+hide circle
+
+start
+:Coordinator reviews a saved draft;
+if (Publish requested?) then (yes)
+else (no)
+ :Keep draft private;
+ stop
+endif
+:Begin SQL write and lock guard;
+:Read current inputs and reservations;
+:Check fingerprint and stored placements;
+if (Fresh, valid and no conflict?) then (yes)
+ :Mark previous current as SUPERSEDED;
+ :Mark draft PUBLISHED;
+ :Switch the session current pointer;
+ :Commit all changes;
+ :Enable current lookup;
+else (no)
+ :Roll back all changes;
+ :Explain error; preserve current plan;
+endif
+stop
+
+@enduml

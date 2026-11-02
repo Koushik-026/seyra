@@ -1,0 +1,6 @@
+roll_number,name,year,branch,section
+0001,Fictional One,2,AI-ML,A
+0001,Fictional Duplicate,2,CSE,B
+BAD ROLL,Fictional Whitespace,2,CSE,A
+0004,Fictional Invalid Year,9,CSE,A
+0005,Fictional Unknown Branch,2,UNKNOWN,A

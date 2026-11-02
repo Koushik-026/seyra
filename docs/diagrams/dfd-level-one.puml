@@ -1,0 +1,54 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor white
+skinparam defaultFontName "Times New Roman"
+skinparam defaultFontSize 17
+skinparam shadowing false
+skinparam roundcorner 0
+skinparam ArrowColor #202020
+skinparam LineColor #202020
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #F5F7FA
+skinparam classBorderColor #202020
+skinparam componentBackgroundColor #F5F7FA
+skinparam componentBorderColor #202020
+skinparam stateBackgroundColor white
+skinparam stateBorderColor #202020
+skinparam actorStyle stickman
+skinparam sequenceMessageAlign center
+skinparam sequenceParticipantBackgroundColor #F5F7FA
+skinparam sequenceParticipantBorderColor #202020
+skinparam sequenceLifeLineBorderColor #505050
+skinparam NoteBackgroundColor #FFFFFF
+skinparam NoteBorderColor #707070
+skinparam nodesep 35
+skinparam ranksep 45
+hide circle
+
+top to bottom direction
+rectangle Coordinator as C
+rectangle Student as S
+usecase "1.0\nManage saved inputs" as P1
+usecase "2.0\nAllocate and validate" as P2
+usecase "3.0\nReview and publish" as P3
+usecase "4.0\nFind current seat" as P4
+database "D1\nStudent, room and sitting relations" as D1
+database "D2\nPlans and relational snapshots" as D2
+database "D3\nCurrent-publication views" as D3
+C --> P1 : Student / room / sitting changes
+P1 --> D1 : Validated master and link rows
+D1 --> P2 : Consistent saved input
+P2 --> D2 : Validated private version
+C --> P3 : Review / publish / withdraw
+D2 --> P3 : Candidate and current plan
+P3 --> D2 : Atomic lifecycle changes
+P3 --> D3 : Current pointer drives views
+S --> P4 : Sitting and roll
+D3 --> P4 : Current assignment + saved geometry
+P4 --> S : Seat and map / no result
+note bottom
+Logical data-flow view. D3 represents SQL views;
+it is not a separate writable table or database.
+end note
+
+@enduml

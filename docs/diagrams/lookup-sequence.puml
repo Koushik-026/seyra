@@ -1,0 +1,53 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor white
+skinparam defaultFontName "Times New Roman"
+skinparam defaultFontSize 17
+skinparam shadowing false
+skinparam roundcorner 0
+skinparam ArrowColor #202020
+skinparam LineColor #202020
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #F5F7FA
+skinparam classBorderColor #202020
+skinparam componentBackgroundColor #F5F7FA
+skinparam componentBorderColor #202020
+skinparam stateBackgroundColor white
+skinparam stateBorderColor #202020
+skinparam actorStyle stickman
+skinparam sequenceMessageAlign center
+skinparam sequenceParticipantBackgroundColor #F5F7FA
+skinparam sequenceParticipantBorderColor #202020
+skinparam sequenceLifeLineBorderColor #505050
+skinparam NoteBackgroundColor #FFFFFF
+skinparam NoteBorderColor #707070
+skinparam nodesep 35
+skinparam ranksep 45
+hide circle
+
+autonumber
+actor Student as S
+participant "Student UI" as UI
+participant "Node proxy" as N
+participant "Java API\nand service" as J
+database "SQL views" as DB
+S -> UI : Sitting and roll
+UI -> N : GET assignment
+N -> J : Forward + token
+J -> J : Normalize roll
+J -> DB : Read current seat\nand saved layout
+alt Current match
+ DB --> J : Seat + geometry
+ J --> N : Assignment JSON
+ N --> UI : Forward JSON
+ UI -> UI : Highlight A/B seat
+ UI --> S : Position and map
+else No current match
+ DB --> J : No row
+ J --> N : 404 + message
+ N --> UI : Error JSON
+ UI -> UI : Clear old map
+ UI --> S : Useful no-result state
+end
+
+@enduml

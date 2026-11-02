@@ -1,0 +1,88 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor white
+skinparam defaultFontName "Times New Roman"
+skinparam defaultFontSize 17
+skinparam shadowing false
+skinparam roundcorner 0
+skinparam ArrowColor #202020
+skinparam LineColor #202020
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #F5F7FA
+skinparam classBorderColor #202020
+skinparam componentBackgroundColor #F5F7FA
+skinparam componentBorderColor #202020
+skinparam stateBackgroundColor white
+skinparam stateBorderColor #202020
+skinparam actorStyle stickman
+skinparam sequenceMessageAlign center
+skinparam sequenceParticipantBackgroundColor #F5F7FA
+skinparam sequenceParticipantBorderColor #202020
+skinparam sequenceLifeLineBorderColor #505050
+skinparam NoteBackgroundColor #FFFFFF
+skinparam NoteBorderColor #707070
+skinparam nodesep 35
+skinparam ranksep 45
+hide circle
+
+top to bottom direction
+entity branches {
+  * code : VARCHAR(20) <<PK>>
+  --
+  label : VARCHAR(80)
+}
+entity students {
+  * id : BIGINT <<PK>>
+  --
+  roll : VARCHAR(40) <<UQ>>
+  name, study_year, section
+  branch : VARCHAR(20) <<FK>>
+  revision : INT
+}
+entity "exam_sessions" as sessions {
+  * id : BIGINT <<PK>>
+  --
+  name, exam_date, start_time, end_time
+  revision : INT
+  current_plan_id : BIGINT <<nullable FK>>
+}
+entity "session_roster" as roster {
+  * session_id : BIGINT <<PK, FK>>
+  * student_id : BIGINT <<PK, FK>>
+}
+entity rooms {
+  * id : BIGINT <<PK>>
+  --
+  code : VARCHAR(30) <<UQ>>
+  row_count, benches_per_row, revision
+}
+entity "room_benches" as benches {
+  * room_id : BIGINT <<PK, FK>>
+  * row_no : INT <<PK>>
+  * bench_no : INT <<PK>>
+  --
+  usable : BOOLEAN
+}
+entity "session_rooms" as selected {
+  * session_id : BIGINT <<PK, FK>>
+  * room_id : BIGINT <<PK, FK>>
+}
+entity "session_exclusions" as excluded {
+  * session_id : BIGINT <<PK, FK>>
+  * room_id : BIGINT <<PK, FK>>
+  * row_no : INT <<PK>>
+  * bench_no : INT <<PK>>
+}
+branches ||--o{ students
+students ||--o{ roster
+sessions ||--o{ roster
+sessions ||--o{ selected
+rooms ||--o{ selected
+rooms ||--o{ benches
+selected ||--o{ excluded : composite FK
+note bottom of benches
+One row per physical bench position.
+Different row lengths do not create phantom positions.
+end note
+
+@enduml

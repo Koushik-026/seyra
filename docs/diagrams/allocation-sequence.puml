@@ -1,0 +1,62 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor white
+skinparam defaultFontName "Times New Roman"
+skinparam defaultFontSize 17
+skinparam shadowing false
+skinparam roundcorner 0
+skinparam ArrowColor #202020
+skinparam LineColor #202020
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #F5F7FA
+skinparam classBorderColor #202020
+skinparam componentBackgroundColor #F5F7FA
+skinparam componentBorderColor #202020
+skinparam stateBackgroundColor white
+skinparam stateBorderColor #202020
+skinparam actorStyle stickman
+skinparam sequenceMessageAlign center
+skinparam sequenceParticipantBackgroundColor #F5F7FA
+skinparam sequenceParticipantBorderColor #202020
+skinparam sequenceLifeLineBorderColor #505050
+skinparam NoteBackgroundColor #FFFFFF
+skinparam NoteBorderColor #707070
+skinparam nodesep 35
+skinparam ranksep 45
+hide circle
+
+autonumber
+actor Coordinator as C
+participant "Node / Java\nHTTP routing" as API
+participant PlannerService as PS
+participant Allocator as A
+participant PlanValidator as V
+database "H2 SQL\nvia Database" as DB
+C -> API : POST generate(session)
+API -> PS : generate(session)
+PS -> DB : Read consistent input
+DB --> PS : Input + revisions
+PS -> A : allocate(input)
+A --> PS : Seats
+PS -> V : validate candidate
+V --> PS : Valid or exception
+PS -> DB : BEGIN; lock guard
+PS -> DB : Recheck inputs / conflicts
+DB --> PS : Current state
+alt Fresh and no conflict
+  PS -> DB : Save DRAFT + snapshots
+  PS -> DB : COMMIT
+  DB --> PS : Plan identifier
+  PS --> API : Draft identifier
+  API --> C : Show private draft
+else Stale or conflicting
+  PS -> DB : ROLLBACK
+  PS --> API : Conflict or validation error
+  API --> C : Show error; keep current
+end
+note over API
+The Node proxy and Java HTTP handler are condensed
+into one transport lifeline in this interaction view.
+end note
+
+@enduml
