@@ -1,0 +1,16 @@
+.git
+.codex
+.agents
+.env
+.env.*
+node_modules
+tools
+lib
+build
+data
+tmp
+output
+docs
+samples
+tests
+*.log

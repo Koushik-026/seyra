@@ -1,0 +1,10 @@
+tools/
+lib/*.jar
+build/
+data/*
+!data/.gitkeep
+tmp/
+node_modules/
+.env
+*.log
+output/

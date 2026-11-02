@@ -1,0 +1,15 @@
+{
+  "name": "exam-hall-seating-planner",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Java backend, SQL persistence and Node/HTML/CSS academic seating planner",
+  "scripts": {
+    "start": "node scripts/start.mjs",
+    "build": "node scripts/build.mjs",
+    "test": "node scripts/test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "type": "module"
+}

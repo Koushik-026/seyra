@@ -1,0 +1,22 @@
+{
+  "java": "Temurin 21.0.13+9",
+  "nodeTested": "24.20.0",
+  "libraries": [
+    {
+      "file": "h2-2.4.240.jar",
+      "sha256": "29b70e427cc1c40cdc376283adbb0cc62853073797bb5fe5761f81fe73d57ce0"
+    },
+    {
+      "file": "jackson-annotations-2.18.3.jar",
+      "sha256": "8aa5740d80b5a5025508b41bbadbaa1fb3772267c628b2e30681a4f45f8b8931"
+    },
+    {
+      "file": "jackson-core-2.18.3.jar",
+      "sha256": "056bc4d3e5e53ce821450fa97b3f9e0f8dde125cf6da6884353bb1f09582e1d9"
+    },
+    {
+      "file": "jackson-databind-2.18.3.jar",
+      "sha256": "510bdda75a7a6186c5bf33b851239488a1450906ae5757121f2e1cc48a7e108f"
+    }
+  ]
+}

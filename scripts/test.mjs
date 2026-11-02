@@ -1,0 +1,13 @@
+import { spawnSync } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
+import { build } from './build.mjs';
+import { javaTool, classpath, root } from './paths.mjs';
+build(true);
+const result=spawnSync(javaTool('java'),['-cp',classpath,'planner.CoreTests'],{cwd:root,encoding:'utf8',windowsHide:true,maxBuffer:10_000_000});
+fs.mkdirSync(path.join(root,'output','tests'),{recursive:true});
+fs.writeFileSync(path.join(root,'output','tests','java-results.txt'),`${new Date().toISOString()}\n${result.stdout||''}\n${result.stderr||''}`);
+process.stdout.write(result.stdout||'');process.stderr.write(result.stderr||'');
+if(result.error)throw result.error;if(result.status!==0)process.exit(result.status||1);
+const checks=spawnSync(process.execPath,['--test','tests/web.test.mjs'],{cwd:root,stdio:'inherit',windowsHide:true});
+if(checks.status!==0)process.exit(checks.status||1);
