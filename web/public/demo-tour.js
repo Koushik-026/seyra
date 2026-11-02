@@ -1,4 +1,4 @@
-import {demoMode} from '/context.js';
+import {demoMode,publicDemo} from '/context.js';
 const scenes=[
   ['overview','1 · The sitting','Start with one exam sitting','This practice workspace includes a published example: 40 fictional students, one sitting and two reusable room layouts. Student lookup is ready immediately. Open each stage below to see what the coordinator does.'],
   ['students','2 · The roster','Choose who is appearing','The 40 checked students are the saved roster: 30 in Year 2 AI-ML and 10 in Year 2 CSE. Try a selection change, then Save roster to confirm it.'],
@@ -13,6 +13,7 @@ export function mountDemoTour(){
   const panel=document.createElement('section');panel.id='demo-tour';panel.className='demo-tour';panel.setAttribute('aria-label','Guided practice simulation');
   panel.innerHTML=`<div class="demo-tour-top"><span class="sandbox-badge">PRACTICE WORKSPACE</span><a href="/">Return to your workspace ↗</a></div><h2>Try the whole journey.</h2><p class="demo-isolation">Fictional records are loaded in a separate SQL database. Changes here never alter your normal exams. This shared practice starts fresh with a published example when the server restarts.</p><nav class="demo-scenes" aria-label="Simulation stages">${scenes.map((s,i)=>`<button type="button" data-demo-scene="${i}">${s[1]}</button>`).join('')}</nav><div class="demo-scene"><div><p class="eyebrow" id="demo-scene-position"></p><h3 id="demo-scene-title"></h3><p id="demo-scene-description"></p></div><a id="demo-student-link" class="button small" href="/student?demo=1" target="_blank" rel="noopener">Try student lookup ↗</a></div>`;
   document.querySelector('.session-bar').before(panel);
+  if(publicDemo){panel.querySelector('.demo-tour-top a').href='/student?demo=1';panel.querySelector('.demo-tour-top a').textContent='Open student portal ↗';panel.querySelector('.demo-isolation').textContent='Shared online practice with fictional records. Everyone can edit these samples; use fictional details only. A published example is restored whenever the service restarts.';}
 }
 export function selectDemoScene(index){scene=index;return scenes[index][0]==='student'?'plans':scenes[index][0];}
 export function renderDemoTour(current){

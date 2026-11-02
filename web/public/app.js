@@ -2,7 +2,7 @@ import { renderSeating, setBenchColumns } from "/seating.js";
 import { roomRows, roomBenchCount, benchLabel } from "/layout.js";
 import { createRoomEditor } from "/room-editor.js";
 import { guideState, workflowSteps } from "/workflow.js";
-import {demoMode,apiRoot,pageUrl,workspaceUrl} from '/context.js';
+import {demoMode,publicDemo,apiRoot,pageUrl,workspaceUrl} from '/context.js';
 import {mountDemoTour,renderDemoTour,selectDemoScene} from '/demo-tour.js';
 const $ = selector => document.querySelector(selector);
 const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -13,6 +13,7 @@ mountDemoTour();
 document.querySelectorAll('a[href="/student"]').forEach(link=>link.href=pageUrl('/student'));
 document.querySelector('.brand').href=workspaceUrl;
 if(demoMode){document.title='Seyra · Practice workspace';$('#open-demo').href='/';$('#open-demo').textContent='Return to your workspace ↗';}
+if(publicDemo){$('#open-demo').href=pageUrl('/student');$('#open-demo').textContent='Open student portal ↗';$('.sidebar-bottom').innerHTML='<span class="status-dot"></span> Shared online demo<p>Use fictional records only</p><a href="/student?demo=1">Open student lookup ↗</a><a href="/help.html">Project guide ↗</a>';}
 let state = {students:[],rooms:[],sessions:[],branches:[]}, current = null, selected = localStorage.getItem(sessionStorageKey) || '', roster = new Set(), planId = null, activePlan = null, busy = false, previewValid = false, rosterDirty = false, roomsDirty = false;
 const titles = {overview:['Every student. A place to belong.','Bring your roster, choose your rooms, and turn exam-day logistics into a beautifully simple plan.'],students:['A roster, ready.','The right students, in the right sitting. Start with the people behind the plan.'],rooms:['Room for everyone.','A clear view of your spaces. Configure benches, choose rooms, and make every seat count.'],plans:['Every seat, considered.','From a private draft to a published plan. Review the details, then make it official.']};
 async function api(path, method = 'GET', body) {

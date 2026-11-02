@@ -43,7 +43,7 @@ export function createWebServer({ javaPort, token, publicDemo = process.env.PLAN
     const target = path.resolve(root, 'web', 'public', relative);
     const publicRoot = path.join(root, 'web', 'public') + path.sep;
     if (!target.startsWith(publicRoot)) { res.writeHead(403); return res.end('Forbidden'); }
-    try { const contents = await fs.readFile(target); res.writeHead(200, { 'Content-Type': types[path.extname(target)] ?? 'application/octet-stream' }); res.end(contents); }
+    try { let contents = await fs.readFile(target);if(publicDemo&&path.extname(target)==='.html')contents=contents.toString('utf8').replace('<head>','<head><meta name="seyra-public-demo" content="true">'); res.writeHead(200, { 'Content-Type': types[path.extname(target)] ?? 'application/octet-stream' }); res.end(contents); }
     catch { res.writeHead(404, { 'Content-Type': 'text/plain' }); res.end('Page not found.'); }
   });
 }

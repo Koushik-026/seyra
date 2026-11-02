@@ -73,6 +73,7 @@ test('hosted demo uses HTTPS origins, preserves demo links and blocks normal wor
     web=createWebServer({javaPort:backend.address().port,token:'test-token',publicDemo:true});
     await new Promise(resolve=>web.listen(0,'127.0.0.1',resolve));const base=`http://127.0.0.1:${web.address().port}`;
     const home=await fetch(base,{redirect:'manual'});assert.equal(home.status,302);assert.equal(home.headers.get('Location'),'/demo');
+    assert.ok((await (await fetch(base+'/demo')).text()).includes('<meta name="seyra-public-demo" content="true">'));
     const student=await fetch(base+'/student',{redirect:'manual'});assert.equal(student.headers.get('Location'),'/student?demo=1');
     const print=await fetch(base+'/print?plan=7',{redirect:'manual'});assert.equal(print.headers.get('Location'),'/print?plan=7&demo=1');
     assert.equal((await fetch(base+'/api/admin/state')).status,403);
