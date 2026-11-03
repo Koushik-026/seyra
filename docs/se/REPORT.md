@@ -154,7 +154,7 @@ System tests follow the whole browser-to-Node-to-Java-to-SQL path. An API succes
 
 The principal remaining deployment risk is temporary hosted storage. The public service therefore contains fictional data and states that restart resets it. Authentication, durable hosting and backup/restore must be designed before live exam use. Room geometry currently models discrete bench positions, not measured floor plans; accommodating accessible places or fixed seats requires changes to both the algorithm and its feasibility proof.
 
-Configuration and checksum-pinned dependencies are versioned, while passwords, local databases and generated personalized reports are ignored. Changes should update code, tests and affected diagrams together. A runtime release should pass allocation, SQL and browser checks appropriate to its change. Documentation-only synchronization can avoid restarting the shared demo. No invented team contribution allocation or fabricated schedule is needed to describe the design.
+Configuration and checksum-pinned dependencies are versioned, while passwords, local databases and generated personalized reports are ignored. Changes should update code, tests and affected diagrams together. A runtime release should pass allocation, SQL and browser checks appropriate to its change. Documentation-only synchronization can avoid restarting the shared demo.
 
 ## 6 RESULTS
 

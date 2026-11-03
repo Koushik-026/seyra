@@ -145,7 +145,7 @@ History is retained as versioned rows, not recomputed from the current student a
 
 The lab creates INSERT, UPDATE and DELETE triggers on a separate demonstration contact table. `ContactAudit` implements H2's Trigger interface and writes the operation and record ID to `lab_audit`. The recorded run contains exactly three corresponding audit events. These triggers demonstrate the DBMS concept; the application does not claim that all business audit events are database triggers. Operational `audit_events` entries are written by the application.
 
-Run `node scripts/dbms-lab.mjs` to compile and execute this isolated exercise. The recorded output confirms the 30/10 aggregate groups, scalar result 30, two cursor-report rows, a correlated query, a published assignment and the three trigger events. H2 Java aliases are not Oracle PL/SQL procedures or MySQL stored-program syntax; reproducing them on another DBMS would require a dialect-specific implementation.
+Run `node scripts/dbms-lab.mjs` to reproduce the 30/10 counts, scalar result 30, published lookup and three trigger events. H2 Java aliases and JDBC cursors use H2/Java syntax; another DBMS needs its own routine implementation.
 
 ## 6 RESULTS
 

@@ -153,7 +153,7 @@ def markdown(d,key):
             p=line(d,'RESULT SCREEN' if chapter==6 else 'DESIGN DIAGRAM',13,True,before=10,after=14)
             p.paragraph_format.keep_with_next=True
             with Image.open(path) as im:w,h=im.size
-            maxw,maxh=(490,490) if chapter==6 else (510,575);scale=min(maxw/w,maxh/h)
+            maxw,maxh=(490,490) if chapter==6 else (510,490);scale=min(maxw/w,maxh/h)
             p=d.add_paragraph();p.alignment=A.CENTER;p.add_run().add_picture(str(path),width=Pt(w*scale),height=Pt(h*scale))
             p.paragraph_format.keep_with_next=True
             line(d,f'Figure {chapter}.{figure}  {m[1]}',11,before=10,after=12)
